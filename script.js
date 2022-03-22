@@ -8,22 +8,41 @@ const makePlayer = (playerNumber) => {
   }
   const getMarker = () => marker;
   const getPlayerNumber = () => playerNumber;
+
+  return { getMarker, getPlayerNumber };
 };
 
 //gameBoard = module
 
 const gameBoard = (() => {
-  let board = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+  let board = ["", "O", "X", "O", "X", "O", "X", "O", "X"];
 
-  const renderBoard = () => {
+  const markSquare = (index, player) => {
+    if (board[index] === "") {
+      board[index] = player.getMarker();
+    }
+  };
+
+  const renderBoard = (player) => {
     for (let i = 0; i < board.length; i++) {
       const div = document.querySelector(".board");
       let square = document.createElement("div");
-      //set data attribute
+      square.setAttribute("data-key", i);
       square.innerHTML = board[i];
-      let className = "square-" + i;
+      let className = "game-square";
       square.classList.add(className);
+      square.id = "square-" + i;
       div.appendChild(square);
+    }
+
+    let squares = document.getElementsByClassName("game-square");
+    for (let j = 0; j < squares.length; j++) {
+      squares[j].addEventListener("click", (e) => {
+        let index = e.target.getAttribute("data-key");
+        markSquare(index, player);
+        console.log("test");
+        renderBoard();
+      });
     }
   };
 
@@ -55,11 +74,12 @@ Need a way to check for winner after 3rd turn rotation. Winning cant occur when 
     4, 5, 6
     7, 8, 9
 
-    ^ winning combinations
+    ^ winning combinations, all values -1
 Check for a draw after 9 turns
 Need a turn count variable in the game module and a turn incrementer method
 
 
 */
 
-gameBoard.renderBoard();
+const p1 = makePlayer(2);
+gameBoard.renderBoard(p1);

@@ -32,45 +32,52 @@ body {
     "s3 s4 s5"
     "s6 s7 s8";
 }
-.square-0 {
+#square-0 {
   grid-area: s0;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
-.square-1 {
+#square-1 {
   grid-area: s1;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
 
-.square-2 {
+#square-2 {
   grid-area: s2;
   border-bottom: 1px solid black;
 }
-.square-3 {
+#square-3 {
   grid-area: s3;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
-.square-4 {
+#square-4 {
   grid-area: s4;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
 
-.square-5 {
+#square-5 {
   grid-area: s5;
   border-bottom: 1px solid black;
 }
 
-.square-6 {
+#square-6 {
   grid-area: s6;
   border-right: 1px solid black;
 }
-.square-7 {
+#square-7 {
   grid-area: s7;
   border-right: 1px solid black;
 }
-.square-8 {
+#square-8 {
   grid-area: s8;
+}
+
+.board div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
