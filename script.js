@@ -15,15 +15,22 @@ const makePlayer = (playerNumber) => {
 //gameBoard = module
 
 const gameBoard = (() => {
-  let board = ["", "O", "X", "O", "X", "O", "X", "O", "X"];
+  let board = ["", "", "X", "O", "X", "O", "X", "O", "X"];
 
   const markSquare = (index, player) => {
     if (board[index] === "") {
       board[index] = player.getMarker();
+      renderBoard();
     }
   };
-
-  const renderBoard = (player) => {
+  const refreshBoard = () => {
+    const div = document.querySelector(".board");
+    while (div.firstChild) {
+      div.removeChild(div.firstChild);
+    }
+    renderBoard();
+  };
+  const renderBoard = () => {
     for (let i = 0; i < board.length; i++) {
       const div = document.querySelector(".board");
       let square = document.createElement("div");
@@ -39,9 +46,8 @@ const gameBoard = (() => {
     for (let j = 0; j < squares.length; j++) {
       squares[j].addEventListener("click", (e) => {
         let index = e.target.getAttribute("data-key");
-        markSquare(index, player);
+        markSquare(index, p1);
         console.log("test");
-        renderBoard();
       });
     }
   };
@@ -53,10 +59,15 @@ const gameBoard = (() => {
 
 //game = module
 
-const playGame = (() => {
+const game = (() => {
   let turnCount = 0;
-
+  const p1 = makePlayer(1);
+  const p2 = makePlayer(2);
   const incrementTurn = () => (turnCount += 1);
+  const playGame = () => {
+    gameBoard.renderBoard();
+  };
+  return { playGame };
 })();
 /*On page load/game reset create a grid div with 9 different divs, each representing an array index. 
 Will have to add event listeners to each square similar to the library
@@ -77,9 +88,10 @@ Need a way to check for winner after 3rd turn rotation. Winning cant occur when 
     ^ winning combinations, all values -1
 Check for a draw after 9 turns
 Need a turn count variable in the game module and a turn incrementer method
-
+Could determine player by turn % 2, if turn%2 = 1 its player 1's turn else player 2's turn
 
 */
-
-const p1 = makePlayer(2);
-gameBoard.renderBoard(p1);
+// const p1 = makePlayer(1);
+// const p2 = makePlayer(2);
+// gameBoard.renderBoard(p1);
+game.playGame();
