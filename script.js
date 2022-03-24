@@ -21,9 +21,10 @@ const Counter = (() => {
 //gameBoard = module
 
 const gameBoard = (() => {
-  let board = ["", "", "", "O", "X", "O", "X", "O", "X"];
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const markSquare = (index) => {
+    let result = "";
     if (board[index] === "") {
       if (Counter.count % 2 === 0) {
         let play = game.getPlayer1();
@@ -37,6 +38,17 @@ const gameBoard = (() => {
         board[index] = play.marker;
         Counter.count++;
         refreshBoard();
+      }
+    }
+    if (Counter.count >= 3) {
+      result = game.checkWinner();
+      if (game.checkWinner() === "" && Counter.count === 9) {
+        alert("Tie");
+      }
+
+      if (game.checkWinner() !== "") {
+        console.log("here");
+        alert("Winner is " + game.checkWinner());
       }
     }
   };
@@ -71,6 +83,7 @@ const gameBoard = (() => {
 
   return {
     renderBoard,
+    board,
   };
 })();
 
@@ -86,7 +99,45 @@ const game = (() => {
   const playGame = () => {
     gameBoard.renderBoard();
   };
-  return { playGame, getPlayer1, getPlayer2 };
+
+  const checkWinner = () => {
+    let winningMarker = "";
+    if (
+      (gameBoard.board[0] === gameBoard.board[1] &&
+        gameBoard.board[2] === gameBoard.board[1]) ||
+      (gameBoard.board[0] === gameBoard.board[3] &&
+        gameBoard.board[3] === gameBoard.board[6]) ||
+      (gameBoard.board[0] === gameBoard.board[4] &&
+        gameBoard.board[4] === gameBoard.board[8])
+    ) {
+      console.log(gameBoard.board[0]);
+      winningMarker = gameBoard.board[0];
+    } else if (
+      gameBoard.board[1] === gameBoard.board[4] &&
+      gameBoard.board[4] === gameBoard.board[7]
+    ) {
+      winningMarker = gameBoard.board[1];
+    } else if (
+      (gameBoard.board[2] === gameBoard.board[5] &&
+        gameBoard.board[5] === gameBoard.board[8]) ||
+      (gameBoard.board[2] === gameBoard.board[4] &&
+        gameBoard.board[4] === gameBoard.board[6])
+    ) {
+      winningMarker = gameBoard.board[2];
+    } else if (
+      gameBoard.board[3] === gameBoard.board[4] &&
+      gameBoard.board[4] === gameBoard.board[5]
+    ) {
+      winningMarker = gameBoard.board[3];
+    } else if (
+      gameBoard.board[6] === gameBoard.board[7] &&
+      gameBoard.board[7] === gameBoard.board[8]
+    ) {
+      winningMarker = gameBoard.board[6];
+    }
+    return winningMarker;
+  };
+  return { playGame, getPlayer1, getPlayer2, checkWinner };
 })();
 /*On page load/game reset create a grid div with 9 different divs, each representing an array index. 
 Will have to add event listeners to each square similar to the library
