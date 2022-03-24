@@ -81,9 +81,23 @@ const gameBoard = (() => {
     }
   };
 
+  const renderButton = () => {
+    const div = document.querySelector(".buttons");
+    let resetbutton = document.createElement("button");
+    div.appendChild(resetbutton);
+    resetbutton.setAttribute("type", "button");
+    resetbutton.innerHTML = "Reset Board";
+    resetbutton.onclick = function () {
+      board = ["", "", "", "", "", "", "", "", ""];
+      Counter.count = 0;
+      console.log("here");
+      refreshBoard();
+    };
+  };
   return {
     renderBoard,
     board,
+    renderButton,
   };
 })();
 
@@ -98,6 +112,7 @@ const game = (() => {
   //const getTurns = () => turnCount;
   const playGame = () => {
     gameBoard.renderBoard();
+    gameBoard.renderButton();
   };
 
   const checkWinner = () => {
@@ -110,7 +125,6 @@ const game = (() => {
       (gameBoard.board[0] === gameBoard.board[4] &&
         gameBoard.board[4] === gameBoard.board[8])
     ) {
-      console.log(gameBoard.board[0]);
       winningMarker = gameBoard.board[0];
     } else if (
       gameBoard.board[1] === gameBoard.board[4] &&
