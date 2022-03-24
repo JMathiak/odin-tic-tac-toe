@@ -57,9 +57,18 @@ const gameBoard = (() => {
     while (div.firstChild) {
       div.removeChild(div.firstChild);
     }
+
     renderBoard();
   };
   const renderBoard = () => {
+    if (Counter.count % 2 === 0) {
+      const turnDiv = document.querySelector(".turnDisplay");
+      turnDiv.innerHTML = `Player 1's (X's) Turn`;
+    } else {
+      const turnDiv = document.querySelector(".turnDisplay");
+      turnDiv.innerHTML = `Player 2's (O's) Turn`;
+    }
+
     for (let i = 0; i < board.length; i++) {
       const div = document.querySelector(".board");
       let square = document.createElement("div");
