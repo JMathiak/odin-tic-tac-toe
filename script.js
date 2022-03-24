@@ -1,26 +1,43 @@
 //players = factories
-const makePlayer = (playerNumber) => {
-  let marker = "";
-  if (playerNumber === 1) {
-    marker = "X";
-  } else if (playerNumber === 2) {
-    marker = "O";
-  }
+const Player = (playerNumber, marker) => {
+  // let marker = "";
+  // if (playerNumber === 1) {
+  //   marker = "X";
+  // } else if (playerNumber === 2) {
+  //   marker = "O";
+  // }
   const getMarker = () => marker;
   const getPlayerNumber = () => playerNumber;
 
-  return { getMarker, getPlayerNumber };
+  return { playerNumber, marker };
 };
+
+const Counter = (() => {
+  let count = 0;
+  const incrementTurn = () => (count = count + 1);
+  return { count, incrementTurn };
+})();
 
 //gameBoard = module
 
 const gameBoard = (() => {
-  let board = ["", "", "X", "O", "X", "O", "X", "O", "X"];
+  let board = ["", "", "", "O", "X", "O", "X", "O", "X"];
 
-  const markSquare = (index, player) => {
+  const markSquare = (index) => {
     if (board[index] === "") {
-      board[index] = player.getMarker();
-      renderBoard();
+      if (Counter.count % 2 === 0) {
+        let play = game.getPlayer1();
+        board[index] = play.marker;
+        console.log(play.marker);
+        Counter.count++;
+
+        refreshBoard();
+      } else if (Counter.count % 2 === 1) {
+        let play = game.getPlayer2();
+        board[index] = play.marker;
+        Counter.count++;
+        refreshBoard();
+      }
     }
   };
   const refreshBoard = () => {
@@ -46,7 +63,7 @@ const gameBoard = (() => {
     for (let j = 0; j < squares.length; j++) {
       squares[j].addEventListener("click", (e) => {
         let index = e.target.getAttribute("data-key");
-        markSquare(index, p1);
+        markSquare(index);
         console.log("test");
       });
     }
@@ -60,14 +77,16 @@ const gameBoard = (() => {
 //game = module
 
 const game = (() => {
-  let turnCount = 0;
-  const p1 = makePlayer(1);
-  const p2 = makePlayer(2);
-  const incrementTurn = () => (turnCount += 1);
+  // const turnCount = makeCounter();
+  const p1 = Player(1, "X");
+  const p2 = Player(2, "O");
+  const getPlayer1 = () => p1;
+  const getPlayer2 = () => p2;
+  //const getTurns = () => turnCount;
   const playGame = () => {
     gameBoard.renderBoard();
   };
-  return { playGame };
+  return { playGame, getPlayer1, getPlayer2 };
 })();
 /*On page load/game reset create a grid div with 9 different divs, each representing an array index. 
 Will have to add event listeners to each square similar to the library
@@ -87,8 +106,8 @@ Need a way to check for winner after 3rd turn rotation. Winning cant occur when 
 
     ^ winning combinations, all values -1
 Check for a draw after 9 turns
-Need a turn count variable in the game module and a turn incrementer method
-Could determine player by turn % 2, if turn%2 = 1 its player 1's turn else player 2's turn
+Need a turn count variable in the game module and a turn incrementer method --> DONE
+Could determine player by turn % 2, if turn%2 = 1 its player 1's turn else player 2's turn --> DONE
 
 */
 // const p1 = makePlayer(1);
