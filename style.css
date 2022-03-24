@@ -9,7 +9,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 2fr 1fr;
   grid-template-areas:
-    ". . ."
+    ". td ."
     ". ga ."
     ". btns .";
   width: 100%;
@@ -18,7 +18,6 @@ body {
 
 .game-area {
   grid-area: ga;
-  outline: 1px solid red;
 }
 
 .board {
@@ -87,4 +86,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.turnDisplay {
+  grid-area: td;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  margin-bottom: 20px;
+  font-size: 28px;
 }
