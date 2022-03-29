@@ -22,33 +22,50 @@ const Counter = (() => {
 
 const gameBoard = (() => {
   let board = ["", "", "", "", "", "", "", "", ""];
-
+  const getBoard = () => board;
   const markSquare = (index) => {
     let result = "";
     if (board[index] === "") {
       if (Counter.count % 2 === 0) {
         let play = game.getPlayer1();
         board[index] = play.marker;
-        console.log(play.marker);
         Counter.count++;
-
+        console.log("Turn Count: " + Counter.count);
+        console.log(board);
         refreshBoard();
       } else if (Counter.count % 2 === 1) {
         let play = game.getPlayer2();
         board[index] = play.marker;
+        console.log(board);
         Counter.count++;
+        console.log("Turn Count: " + Counter.count);
         refreshBoard();
       }
     }
-    if (Counter.count >= 3) {
-      result = game.checkWinner();
-      if (game.checkWinner() === "" && Counter.count === 9) {
-        alert("Tie");
+    if (Counter.count >= 4) {
+      game.checkWinner();
+      result = game.getWinningMarker();
+      if (result === "" && Counter.count === 9) {
+        setTimeout(function () {
+          alert("The Game is a Tie, Click Reset Board to Play Again");
+        }, 0);
+        board = ["", "", "", "", "", "", "", "", ""];
+        for (let i = 0; i < board.length; i++) {
+          board[i] = "";
+        }
       }
 
-      if (game.checkWinner() !== "") {
-        console.log("here");
-        alert("Winner is " + game.checkWinner());
+      if (result !== "") {
+        refreshBoard();
+        console.log("Winner here");
+        setTimeout(function () {
+          alert("Winner is " + result + " , Click Reset Board to Play Again");
+        }, 0);
+        board = ["", "", "", "", "", "", "", "", ""];
+        for (let i = 0; i < board.length; i++) {
+          board[i] = "";
+        }
+        Counter.count = 0;
       }
     }
   };
@@ -97,7 +114,11 @@ const gameBoard = (() => {
     resetbutton.setAttribute("type", "button");
     resetbutton.innerHTML = "Reset Board";
     resetbutton.onclick = function () {
+      console.log(board);
       board = ["", "", "", "", "", "", "", "", ""];
+      for (let i = 0; i < board.length; i++) {
+        board[i] = "";
+      }
       Counter.count = 0;
       console.log("here");
       refreshBoard();
@@ -107,6 +128,7 @@ const gameBoard = (() => {
     renderBoard,
     board,
     renderButton,
+    getBoard,
   };
 })();
 
@@ -119,48 +141,46 @@ const game = (() => {
   const getPlayer1 = () => p1;
   const getPlayer2 = () => p2;
   //const getTurns = () => turnCount;
+  let winningMarker = "";
+  const getWinningMarker = () => winningMarker;
   const playGame = () => {
     gameBoard.renderBoard();
     gameBoard.renderButton();
   };
-
   const checkWinner = () => {
-    let winningMarker = "";
+    let board = gameBoard.getBoard();
+    console.log("CW Board: " + board);
     if (
-      (gameBoard.board[0] === gameBoard.board[1] &&
-        gameBoard.board[2] === gameBoard.board[1]) ||
-      (gameBoard.board[0] === gameBoard.board[3] &&
-        gameBoard.board[3] === gameBoard.board[6]) ||
-      (gameBoard.board[0] === gameBoard.board[4] &&
-        gameBoard.board[4] === gameBoard.board[8])
+      (board[0] === board[1] && board[2] === board[1]) ||
+      (board[0] === board[3] && board[3] === board[6]) ||
+      (board[0] === board[4] && board[4] === board[8])
     ) {
-      winningMarker = gameBoard.board[0];
-    } else if (
-      gameBoard.board[1] === gameBoard.board[4] &&
-      gameBoard.board[4] === gameBoard.board[7]
-    ) {
-      winningMarker = gameBoard.board[1];
-    } else if (
-      (gameBoard.board[2] === gameBoard.board[5] &&
-        gameBoard.board[5] === gameBoard.board[8]) ||
-      (gameBoard.board[2] === gameBoard.board[4] &&
-        gameBoard.board[4] === gameBoard.board[6])
-    ) {
-      winningMarker = gameBoard.board[2];
-    } else if (
-      gameBoard.board[3] === gameBoard.board[4] &&
-      gameBoard.board[4] === gameBoard.board[5]
-    ) {
-      winningMarker = gameBoard.board[3];
-    } else if (
-      gameBoard.board[6] === gameBoard.board[7] &&
-      gameBoard.board[7] === gameBoard.board[8]
-    ) {
-      winningMarker = gameBoard.board[6];
+      winningMarker = board[0];
+      console.log(board);
     }
-    return winningMarker;
+    if (board[1] === board[4] && board[4] === board[7]) {
+      winningMarker = board[1];
+      console.log(board);
+    }
+    if (board[2] === board[4] && board[4] === board[6]) {
+      winningMarker = board[2];
+      console.log(board);
+    }
+    if (board[2] === board[5] && board[8] === board[2]) {
+      console.log("FUCK YOU");
+      winningMarker = board[2];
+    }
+    if (board[3] === board[4] && board[4] === board[5]) {
+      winningMarker = board[3];
+      console.log(board);
+    }
+    if (board[6] === board[7] && board[7] === board[8]) {
+      winningMarker = board[6];
+      console.log(board);
+    }
+    console.log("WM: " + winningMarker);
   };
-  return { playGame, getPlayer1, getPlayer2, checkWinner };
+  return { playGame, getPlayer1, getPlayer2, checkWinner, getWinningMarker };
 })();
 /*On page load/game reset create a grid div with 9 different divs, each representing an array index. 
 Will have to add event listeners to each square similar to the library

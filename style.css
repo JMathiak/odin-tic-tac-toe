@@ -9,7 +9,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 2fr 1fr;
   grid-template-areas:
-    ". td ."
+    "title td ."
     ". ga ."
     ". btns .";
   width: 100%;
@@ -30,6 +30,8 @@ body {
     "s0 s1 s2"
     "s3 s4 s5"
     "s6 s7 s8";
+  font-family: "Inspiration", cursive;
+  font-size: 64px;
 }
 #square-0 {
   grid-area: s0;
@@ -86,6 +88,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Dela Gothic One", cursive;
 }
 
 .turnDisplay {
@@ -95,4 +98,14 @@ body {
   align-items: end;
   margin-bottom: 20px;
   font-size: 28px;
+  font-family: "Dela Gothic One", cursive;
+}
+
+.title {
+  grid-area: title;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Dela Gothic One", cursive;
 }
