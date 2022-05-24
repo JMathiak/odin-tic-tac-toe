@@ -30,15 +30,14 @@ const gameBoard = (() => {
         let play = game.getPlayer1();
         board[index] = play.marker;
         Counter.count++;
-        console.log("Turn Count: " + Counter.count);
-        console.log(board);
+
         refreshBoard();
       } else if (Counter.count % 2 === 1) {
         let play = game.getPlayer2();
         board[index] = play.marker;
-        console.log(board);
+
         Counter.count++;
-        console.log("Turn Count: " + Counter.count);
+
         refreshBoard();
       }
     }
@@ -57,7 +56,7 @@ const gameBoard = (() => {
 
       if (result !== "") {
         refreshBoard();
-        console.log("Winner here");
+
         setTimeout(function () {
           alert("Winner is " + result + " , Click Reset Board to Play Again");
         }, 0);
@@ -102,7 +101,6 @@ const gameBoard = (() => {
       squares[j].addEventListener("click", (e) => {
         let index = e.target.getAttribute("data-key");
         markSquare(index);
-        console.log("test");
       });
     }
   };
@@ -114,13 +112,12 @@ const gameBoard = (() => {
     resetbutton.setAttribute("type", "button");
     resetbutton.innerHTML = "Reset Board";
     resetbutton.onclick = function () {
-      console.log(board);
       board = ["", "", "", "", "", "", "", "", ""];
       for (let i = 0; i < board.length; i++) {
         board[i] = "";
       }
       Counter.count = 0;
-      console.log("here");
+
       refreshBoard();
     };
   };
@@ -149,36 +146,28 @@ const game = (() => {
   };
   const checkWinner = () => {
     let board = gameBoard.getBoard();
-    console.log("CW Board: " + board);
     if (
       (board[0] === board[1] && board[2] === board[1]) ||
       (board[0] === board[3] && board[3] === board[6]) ||
       (board[0] === board[4] && board[4] === board[8])
     ) {
       winningMarker = board[0];
-      console.log(board);
     }
     if (board[1] === board[4] && board[4] === board[7]) {
       winningMarker = board[1];
-      console.log(board);
     }
     if (board[2] === board[4] && board[4] === board[6]) {
       winningMarker = board[2];
-      console.log(board);
     }
     if (board[2] === board[5] && board[8] === board[2]) {
-      console.log("FUCK YOU");
       winningMarker = board[2];
     }
     if (board[3] === board[4] && board[4] === board[5]) {
       winningMarker = board[3];
-      console.log(board);
     }
     if (board[6] === board[7] && board[7] === board[8]) {
       winningMarker = board[6];
-      console.log(board);
     }
-    console.log("WM: " + winningMarker);
   };
   return { playGame, getPlayer1, getPlayer2, checkWinner, getWinningMarker };
 })();
